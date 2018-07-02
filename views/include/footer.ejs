@@ -1,0 +1,41 @@
+
+    <!-- <script src="assets/js/lib/data-table/datatables-init.js"></script> -->
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //get customers
+            $.getJSON( "/admin/customers", function( data ) {
+                console.log(data);
+                var html = '';
+                data.forEach(element => {
+                    html += '<tr><td>' +element.customer_id + '</td><td>' +element.name + '</td><td><a href="/admin/customers/delete/'+element.id+'" class="btn btn-outline-danger">Delete</button></td></tr>'
+                });
+                $("#example tbody").html(html);
+                $('#example').DataTable();
+            });
+            
+            $("#loginForm").validate({
+                rules: {
+                    password: {
+                        required: true,
+                        minlength: 5
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    }
+                },
+                messages: {
+                    
+                    password: {
+                        required: "Please provide a password",
+                        minlength: "Your password must be at least 5 characters long"
+                    },
+                    email: "Please enter a valid email address"
+                }
+            });
+        } );
+    </script>
+
+</body>
+</html>

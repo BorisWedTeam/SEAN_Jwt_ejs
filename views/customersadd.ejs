@@ -1,0 +1,90 @@
+ <!-- Right Panel -->
+
+ <%- include include/header.ejs %>
+
+ <%- include include/sidebar.ejs %>
+ 
+ <div id="right-panel" class="right-panel">
+
+        <%- include include/topnav.ejs %>
+
+        
+        <div class="content mt-3">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-md-12">
+                            <form id="addForm" action="/customer/add" method="post" class="">
+                            <div class="card">
+                                <div class="card-header">
+                                    <strong class="card-title">Add Customer</strong>
+                                </div>
+                                <div class="card-body">
+                                        <div class="row form-group">
+                                            <div class="col col-md-6">
+                                                <div class="input-group">
+                                                <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                                                <input type="text" id="customername" name="customername" placeholder="Input the customer name" class="form-control">
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-6">
+                                                <div class="input-group">
+                                                    <input type="text" id="customerid" name="customerid" placeholder="Gernerate ID" class="form-control">
+                                                    <div class="input-group-btn"><button type="button" class="btn btn-primary" id="generateUnicode">Gernerate</button></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-dot-circle-o"></i> Submit
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- .animated -->
+        </div><!-- .content -->
+    </div><!-- /#right-panel -->
+     <script>
+    function randomPassword(length) {
+        var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890";
+        var pass = "";
+        for (var x = 0; x < length; x++) {
+            var i = Math.floor(Math.random() * chars.length);
+            pass += chars.charAt(i);
+        }
+        return pass;
+    }
+     $("#generateUnicode").click(function(){
+        $("#customerid").val(randomPassword(8));
+     });
+     $("#addForm").validate({
+                rules: {
+                    customerid: {
+                        required: true
+                    },
+                    customername: {
+                        required: true,
+                        minlength : 5
+                    }
+                },
+                messages: {
+                    customerid : {
+                        required: "Please generate id"
+                    },
+                    customername: {
+                        required : "Please provide customer name",
+                        minlength : "The min length is 5."
+                    }
+                }
+            });
+     </script>
+ 
+     <!-- Right Panel -->
+     <%- include include/footer.ejs %>
+ 
