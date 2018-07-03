@@ -1,0 +1,102 @@
+ <!-- Right Panel -->
+
+ <%- include include/header.ejs %>
+
+ <%- include include/sidebar.ejs %>
+ 
+ <div id="right-panel" class="right-panel">
+
+        <%- include include/topnav.ejs %>
+
+        <form action="/monetization/savdAd">
+        <div class="content mt-3">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title">Advertisement</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="checkbox">
+                                        <label>
+                                                <% if (preRollCheck == '1') { %>
+                                                    <input type="checkbox" checked id="preRollCheck" name="preRollCheck" />
+                                                <% } else { %>
+                                                    <input type="checkbox" id="preRollCheck" name="preRollCheck" />
+                                                <% } %>
+                                            Pre Roll
+
+                                        </label>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <input type="text" class="form-control" id="preRollInput" name="preRollInput" value="<%= preRollUrl %>"/>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="checkbox">
+                                    
+                                        <label>
+                                                <%if (midRollCheck) { %>
+                                                    <input type="checkbox" checked id="midRollCheck" name="midRollCheck" />
+                                                <% } else { %> 
+                                                    <input type="checkbox" id="midRollCheck" name="midRollCheck" />
+                                                <% } %>
+                                            Mid Roll
+                                        </label>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <input type="text" class="form-control" value="<%= midRollUrl %>" id="midRollInput" name="midRollInput"/>
+                                </div>
+                                <div class="col-md-6 form-group text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                            <i class="fa fa-dot-circle-o"></i> Save
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="checkbox">
+                                        <label>
+                                                <%if (postRollCheck) { %>
+                                                    <input type="checkbox" checked id="postRollCheck" name="postRollCheck" />
+                                                <% } else{ %> 
+                                                    <input type="checkbox" id="postRollCheck" name="postRollCheck" />
+                                                <% } %>
+                                            
+                                            Post Roll
+                                        </label>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <input type="text" class="form-control" id="postRollInput" name="postRollInput" value="<%= postRollUrl %>"/>
+                                </div>
+    
+                            </div>
+                            <div class="card-body">
+                                <div class="checkbox">
+                                    <label>
+                                        <%if (displayAdsCheck) { %>
+                                            <input type="checkbox" checked id="displayAdsCheck" name="displayAdsCheck" />
+                                        <% } else{ %> 
+                                            <input type="checkbox" id="displayAdsCheck" name="displayAdsCheck" />
+                                        <% } %>
+                                    Display Ads
+                                </label>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <input type="text" class="form-control" id="displayAds" name="displayAds" value="<%= displayAdsValue %>"/>
+                                </div>
+                            </div>
+            
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .animated -->
+        </div><!-- .content -->
+    </form>
+    </div><!-- /#right-panel -->
+     
+    <script src="/assets/js/advertisement.js"></script>
+
+     <!-- Right Panel -->
+     <%- include include/footer.ejs %>
+ 

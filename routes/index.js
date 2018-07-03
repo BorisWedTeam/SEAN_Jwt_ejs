@@ -11,8 +11,8 @@ var crypto = require('crypto');
 
 const { verifyJWT, unVerifyJWT } = require('../helpers/auth');
 
-var config = require('../config/config.js')
-
+var config = require('../config/config.js');
+var constants = require('../config/constant.js');
 var connection = mysql.createConnection({
   host: config.localhost,
   user: config.user,
@@ -39,6 +39,53 @@ router.get('/', unVerifyJWT, (req, res) => {
 
 router.get('/login', unVerifyJWT, (req, res) => {
   res.render('login');
+})
+router.get('/monetization/subscription',verifyJWT,(req,res)=>{
+  res.render('subscription');
+})
+router.get('/monetization/savdAd',verifyJWT,(req,res)=>{
+  var preRollUrl = req.query.preRollInput;
+  var preRollCheck = req.query.preRollCheck?1:0;
+  var midRollUrl = req.query.midRollInput;
+  var midRollCheck = req.query.midRollCheck?1:0;
+  var postRollUrl = req.query.postRollInput;
+  var postRollCheck = req.query.postRollCheck?1:0;
+  var displayAds = req.query.displayAds;
+  var displayAdsCheck = req.query.displayAdsCheck?1:0;
+
+  var sql1 = "UPDATE advertisement SET colValue='"+preRollUrl+"',colCheck="+preRollCheck+" WHERE colName='"+constants.PRE_ROLL_COL+"' ";
+  connection.query(sql1,(err,result)=>{console.log(err);});
+  var sql2 = "UPDATE advertisement SET colValue='"+midRollUrl+"',colCheck="+midRollCheck+" WHERE colName='"+constants.MID_ROLL_COL+"' ";
+  connection.query(sql2,(err,result)=>{console.log(err);});
+  var sql3 = "UPDATE advertisement SET colValue='"+postRollUrl+"',colCheck="+postRollCheck+" WHERE colName='"+constants.POST_ROLL_COL+"' ";
+  connection.query(sql3,(err,result)=>{console.log(err);});
+  var sql4 = "UPDATE advertisement SET colValue='"+displayAds+"',colCheck="+displayAdsCheck+" WHERE colName='"+constants.DISPLAY_ADS_COL+"' ";
+  connection.query(sql4,(err,result)=>{
+    console.log(err);
+    res.redirect('/monetization/advertisement')
+  });
+
+
+})
+router.get('/monetization/advertisement',verifyJWT,(req,res)=>{
+  connection.query("SELECT * FROM advertisement", (err, rows) => {
+    if (err) { console.log(err) }
+    if (rows.length > 0) {
+      var data ={
+        preRollUrl:rows[0].colValue,
+        preRollCheck:rows[0].colCheck,
+        midRollUrl:rows[1].colValue,
+        midRollCheck:rows[1].colCheck,
+        postRollUrl:rows[2].colValue,
+        postRollCheck:rows[2].colCheck,
+        displayAdsValue:rows[3].colValue,
+        displayAdsCheck:rows[3].colCheck
+      }
+      // console.log(rows);
+      // console.log(data);
+      res.render('advertisement',data);
+    }
+  });
 })
 
 router.post('/login', function (req, res, next) {
