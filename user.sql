@@ -41,11 +41,11 @@ CREATE TABLE `customers` (
   `channel` varchar(256) NOT NULL,
   `status` enum('0','1') NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 /*Data for the table `customers` */
 
-insert  into `customers`(`id`,`name`,`customer_id`,`channel`,`status`) values (21,'Luo Tong','KEdpFcFw','chanel2','1');
+insert  into `customers`(`id`,`name`,`customer_id`,`channel`,`status`) values (21,'Luo Tong','KEdpFcFw','chanel2',''),(22,'bsedfs','pk0HeIGP','asdq','1');
 
 /*Table structure for table `platforms` */
 
@@ -60,11 +60,11 @@ CREATE TABLE `platforms` (
   `customer_id` int(11) NOT NULL,
   `app_title` varchar(256) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 /*Data for the table `platforms` */
 
-insert  into `platforms`(`id`,`config_parameter`,`friendly_name`,`value`,`status`,`customer_id`,`app_title`) values (5,'aef','sdf','wefs','1',19,'vsdf'),(6,'ef','we','fs','0',19,'vsdf'),(7,'test1','test2','test3','0',21,'Samsung'),(8,'test4','test5','test6','1',21,'Samsung'),(9,'test10','test11','test12','0',21,'Apple'),(10,'test7','test8','test9','1',21,'Apple');
+insert  into `platforms`(`id`,`config_parameter`,`friendly_name`,`value`,`status`,`customer_id`,`app_title`) values (5,'aef','sdf','wefs','1',19,'vsdf'),(6,'ef','we','fs','0',19,'vsdf'),(19,'a','f','s','1',21,'a'),(20,'s','fsd','fsdf','1',21,'a'),(21,'efrt','sdfwe','sdf','1',21,'n'),(22,'sdf','sfe','fsdf','1',21,'n');
 
 /*Table structure for table `user` */
 
@@ -78,13 +78,13 @@ CREATE TABLE `user` (
   `type` enum('1','2') DEFAULT '1',
   `phone_number` varchar(30) NOT NULL,
   `last_login` datetime NOT NULL,
-  `channels` varchar(256) NOT NULL,
+  `customers` varchar(256) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 /*Data for the table `user` */
 
-insert  into `user`(`id`,`email`,`username`,`password`,`type`,`phone_number`,`last_login`,`channels`) values (8,'joensen19727@gmail.com','tt','7ZaOhA0Q0tMTqHC8ExpOLDEdetCb3zKzQYFHIh9RpuI=','2','9698864912','2018-07-03 18:37:50','chanel1,chanel3'),(9,'sivaa@gmail.com','sivaa','7ZaOhA0Q0tMTqHC8ExpOLDEdetCb3zKzQYFHIh9RpuI=','1','9698864912','2018-07-02 23:47:21','chanel1,chanel3');
+insert  into `user`(`id`,`email`,`username`,`password`,`type`,`phone_number`,`last_login`,`customers`) values (8,'joensen19727@gmail.com','tt','7ZaOhA0Q0tMTqHC8ExpOLDEdetCb3zKzQYFHIh9RpuI=','2','9698864912','2018-07-04 01:36:42','chanel1,chanel3'),(9,'sivaa@gmail.com','sivaa','8/tUKDkmdMEjrcl5jYSCh2Zj3tY+8LTXplrcKQ5s7T8=','1','9698864912','2018-07-02 23:47:21','Luo Tong,bsedfs');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
