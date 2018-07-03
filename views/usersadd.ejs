@@ -1,0 +1,130 @@
+ <!-- Right Panel -->
+
+ <%- include include/header.ejs %>
+
+ <%- include include/sidebar.ejs %>
+ 
+ <div id="right-panel" class="right-panel">
+
+<%- include include/topnav.ejs %>
+
+<div class="content mt-3">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong class="card-title">Edit User</strong>
+                    </div>
+                    <form action="/admin/users/edit" method="post" class="form-horizontal" id="editUserForm">
+                        <div class="card-body">
+                                <input type="hidden" id="user_id" name="user_id" value="<%=(data)?data.id : '' %>"/>
+                                <input type="hidden" id="user_channels" name="user_channels" value=""/>
+                                <div class="row form-group">
+                                    <div class="col col-md-3"><label for="username" class=" form-control-label">UserName</label></div>
+                                    <div class="col-12 col-md-9"><input type="text" id="username" name="username" placeholder="Enter Username..." class="form-control" value="<%=(data)?data.username : '' %>"></div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3"><label for="email" class=" form-control-label">Email</label></div>
+                                    <div class="col-12 col-md-9"><input type="email" id="email" name="email" placeholder="Enter Email..." class="form-control" value="<%=(data)?data.email : '' %>"></div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3"><label for="phone" class=" form-control-label">Phone Number</label></div>
+                                    <div class="col-12 col-md-9"><input type="text" id="phone" name="phone" placeholder="Enter Phone Number..." class="form-control" value="<%=(data)?data.phone_number : '' %>"></div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3"><label for="phone" class=" form-control-label">Channels</label></div>
+                                    <div class="col-12 col-md-9">
+                                        <select data-placeholder="Choose a channel..." multiple class="standardSelect" onchange="javascript:pickchannel();">
+                                            <option value=""></option>
+                                            <% channels.forEach(function(channel){ %>
+                                                <option value="<%= channel.id %>"><%= channel.name %></option>
+                                            <% })%>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3"><label for="password" class=" form-control-label">Password</label></div>
+                                    <div class="col-12 col-md-9"><input type="password" id="password" name="password" placeholder="Enter Password..." class="form-control"></div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3"><label for="password" class=" form-control-label">Confirm Password</label></div>
+                                    <div class="col-12 col-md-9"><input type="password" id="repassword" name="repassword" placeholder="Confirm Password..." class="form-control"></div>
+                                </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="fa fa-dot-circle-o"></i> Submit
+                            </button>
+                            <a href='/users' class="btn btn-danger btn-sm">
+                                <i class="fa fa-ban"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div><!-- .animated -->
+</div><!-- .content -->
+</div>
+<!-- /#right-panel -->
+<script type="text/javascript">
+jQuery(document).ready(function() {
+    var form2 = jQuery('#editUserForm'); 
+    form2.validate({
+        rules: {
+            usernmae: {
+                required : true,
+                minlength : 5
+            },
+            password: {
+                required: true,
+                minlength : 5
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            repassword : {
+                required : true,
+                equalTo : "#password"
+            }
+        },
+        messages: {
+            username: {
+                required : "Please provide a username",
+                minlength : "The length should be 5 at least"
+            },
+            password: {
+                required: "Please provide a password",
+                minlength : "Your password must be at least 5 characters long"
+            },
+            email: {
+                required : "Please provide a email address",
+                email : "Please enter a valid email address"
+            }
+        },
+        submitHandler: function (form) {
+            form.submit();
+            // submit form
+            //$('#form2').submit();
+        }
+    });
+    jQuery(".standardSelect").chosen({
+        disable_search_threshold: 10,
+        no_results_text: "Oops, nothing found!",
+        width: "100%"
+    });
+} );
+
+function pickchannel(){
+    var value = [];
+    $(".search-choice").each(function(){
+        value.push($(this).find('span').text());
+    });
+    $("#user_channels").val(value.join(','));
+}
+</script>
+<!-- Right Panel -->
+<%- include include/footer.ejs %>
+ 
