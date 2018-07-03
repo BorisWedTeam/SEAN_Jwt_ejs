@@ -18,11 +18,15 @@
                                 <strong class="card-title">Users</strong>
                             </div>
                             <div class="card-body">
-                                <table id="example" class="table table-striped table-bordered">
+                                <table id="users" class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Customer ID</th>
-                                            <th>Name</th>
+                                            <th>ID</th>
+                                            <th>Full Name</th>
+                                            <th>Email Address</th>
+                                            <th>Phone number</th>
+                                            <th>Customers</th>
+                                            <th>Last Login</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -38,7 +42,26 @@
         </div><!-- .content -->
     </div><!-- /#right-panel -->
      
- 
+ <script type="text/javascript">
+ $(document).ready(function(){
+    $.getJSON( "/admin/users", function( data ) {
+        console.log(data);
+        var html = '';
+        data.forEach(element => {
+            html += '<tr><td>' +element.id + '</td><td>' 
+                +element.username + '</td><td>'
+                +element.email+'</td><td>'
+                +element.phone_number+'</td><td>'
+                +element.customers+'</td><td>'
+                +element.last_login.replace("T"," ").replace(".000Z","")+'</td><td><a href="/admin/users/delete/'
+                +element.id+'" class="btn btn-outline-danger">Delete</a><a href="/admin/users/edit/'
+                +element.id+'" class="btn btn-outline-info">Edit</a></td></tr>'
+        });
+        $("#users tbody").html(html);
+        $('#users').DataTable();
+    });
+ });
+ </script>
      <!-- Right Panel -->
      <%- include include/footer.ejs %>
  

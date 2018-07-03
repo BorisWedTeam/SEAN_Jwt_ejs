@@ -16,6 +16,20 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`playlist` /*!40100 DEFAULT CHARACTER SE
 
 USE `playlist`;
 
+/*Table structure for table `channels` */
+
+DROP TABLE IF EXISTS `channels`;
+
+CREATE TABLE `channels` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(256) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+/*Data for the table `channels` */
+
+insert  into `channels`(`id`,`name`) values (1,'chanel1'),(2,'chanel2'),(3,'chanel3'),(4,'chanel4'),(5,'chanel5'),(6,'chanel6'),(7,'chanel7');
+
 /*Table structure for table `customers` */
 
 DROP TABLE IF EXISTS `customers`;
@@ -24,12 +38,33 @@ CREATE TABLE `customers` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(256) NOT NULL,
   `customer_id` varchar(8) NOT NULL,
+  `channel` varchar(256) NOT NULL,
+  `status` enum('0','1') NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 /*Data for the table `customers` */
 
-insert  into `customers`(`id`,`name`,`customer_id`) values (2,'asdf','lyNj8CDf');
+insert  into `customers`(`id`,`name`,`customer_id`,`channel`,`status`) values (21,'Luo Tong','KEdpFcFw','chanel2',''),(22,'bsedfs','pk0HeIGP','asdq','1');
+
+/*Table structure for table `platforms` */
+
+DROP TABLE IF EXISTS `platforms`;
+
+CREATE TABLE `platforms` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `config_parameter` varchar(256) NOT NULL,
+  `friendly_name` varchar(256) NOT NULL,
+  `value` varchar(256) NOT NULL,
+  `status` enum('0','1') NOT NULL DEFAULT '0',
+  `customer_id` int(11) NOT NULL,
+  `app_title` varchar(256) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+
+/*Data for the table `platforms` */
+
+insert  into `platforms`(`id`,`config_parameter`,`friendly_name`,`value`,`status`,`customer_id`,`app_title`) values (5,'aef','sdf','wefs','1',19,'vsdf'),(6,'ef','we','fs','0',19,'vsdf'),(19,'a','f','s','1',21,'a'),(20,'s','fsd','fsdf','1',21,'a'),(21,'efrt','sdfwe','sdf','1',21,'n'),(22,'sdf','sfe','fsdf','1',21,'n');
 
 /*Table structure for table `user` */
 
@@ -42,12 +77,14 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   `type` enum('1','2') DEFAULT '1',
   `phone_number` varchar(30) NOT NULL,
+  `last_login` datetime NOT NULL,
+  `customers` varchar(256) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 /*Data for the table `user` */
 
-insert  into `user`(`id`,`email`,`username`,`password`,`type`,`phone_number`) values (6,'test@gmail.com','test','a4ayc/80/OGda4BO/1o/V0etpOqiLx1JwB5S3beHW0s=','1',''),(8,'joensen19727@gmail.com','admin','a4ayc/80/OGda4BO/1o/V0etpOqiLx1JwB5S3beHW0s=','2',''),(9,'siva@gmail.com','siva','WZRHGrsBESr8wYFZ9sx0tPURuZgG2lmzyvWpwXPKz8U=','1','969886491');
+insert  into `user`(`id`,`email`,`username`,`password`,`type`,`phone_number`,`last_login`,`customers`) values (8,'joensen19727@gmail.com','tt','7ZaOhA0Q0tMTqHC8ExpOLDEdetCb3zKzQYFHIh9RpuI=','2','9698864912','2018-07-04 01:36:42','chanel1,chanel3'),(9,'sivaa@gmail.com','sivaa','8/tUKDkmdMEjrcl5jYSCh2Zj3tY+8LTXplrcKQ5s7T8=','1','9698864912','2018-07-02 23:47:21','Luo Tong,bsedfs');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

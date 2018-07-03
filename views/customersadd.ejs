@@ -13,46 +13,194 @@
             <div class="animated fadeIn">
                 <div class="row">
                     <div class="col-md-12">
-                            <form id="addForm" action="/customer/add" method="post" class="">
-                            <div class="card">
-                                <div class="card-header">
-                                    <strong class="card-title">Add Customer</strong>
-                                </div>
-                                <div class="card-body">
+                            <form id="addForm" action="<%=(typeof customer !== 'undefined')? '/customer/edit/'+customer.id: '/customer/add' %>" method="post" class="">
+                                <input type="hidden" id="status" name="status" value="<%=(typeof customer !== 'undefined')?customer.status : '1'%>"/>
+                                <input type="hidden" id="platform_st" name="platform_st" value=""/>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <strong class="card-title"><%=(typeof customer !== 'undefined')?'Edit Customer' : 'Add Customer' %></strong>
+                                    </div>
+                                    <div class="card-body">
                                         <div class="row form-group">
-                                            <div class="col col-md-6">
+                                            <div class="col col-md-8">
                                                 <div class="input-group">
                                                 <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                                                <input type="text" id="customername" name="customername" placeholder="Input the customer name" class="form-control">
+                                                <input type="text" id="customername" name="customername" placeholder="Input the customer name" class="form-control" value="<%=(typeof customer !== 'undefined')?customer.name : '' %>">
                                                 </div>
                                             </div>
-                                            
+                                            <div class="col col-md-4">
+                                                <div class="input-group">
+                                                    <label class="switch switch-text switch-primary switch-pill">
+                                                        <input type="checkbox" class="switch-input" checked="true" id="chk1">
+                                                        <span data-on="On" data-off="Off" class="switch-label"></span>
+                                                        <span class="switch-handle"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="row form-group">
-                                            <div class="col col-md-6">
+                                            <div class="col col-md-8">
                                                 <div class="input-group">
-                                                    <input type="text" id="customerid" name="customerid" placeholder="Gernerate ID" class="form-control">
+                                                    <input type="text" id="customerid" name="customerid" placeholder="Gernerate ID" class="form-control" value="<%=(typeof customer !== 'undefined')?customer.customer_id : '' %>">
                                                     <div class="input-group-btn"><button type="button" class="btn btn-primary" id="generateUnicode">Gernerate</button></div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-8">
+                                                <div class="input-group">
+                                                    <input type="text" id="channel" name="channel" placeholder="Provide Channel Name" class="form-control" value="<%=(typeof customer !== 'undefined')?customer.channel : '' %>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-primary" onclick="showAlert()"><i class="fa fa-plus"></i>Add Platform</button>
+                                        <div id="PlatformContainer">
+                                            <% if(typeof customer !== 'undefined'){
+                                                var platforms = JSON.parse(customer.platforms); %>
+                                                <% Object.keys(platforms).forEach(function(prop) { %>
+                                                    <div class='card' id='card_<%= prop %>'>
+                                                        <div class='card-header'>
+                                                            <button type='button' onclick='javascript:removePlatform("<%= prop %>")' class='bootbox-close-button close' aria-hidden='true'>×</button>
+                                                            <%= prop %>
+                                                        </div>
+                                                        <div class='card-body card-block'>
+                                                            <input class="platformName" name="platformName" type="hidden" value="<%= prop %>"/>
+                                                            <button class="btn btn-green add-row_<%= prop %>">Add New <i class="fa fa-plus"></i></button>
+                                                            <table class="table table-striped table-hover platforms" id="<%= prop %>">
+                                                                <thead>
+                                                                    <tr>
+                                                                            <th>Config Parameter</th>
+                                                                            <th>Friendly Name</th>
+                                                                            <th>Value</th>
+                                                                            <th>Readonly/Writeable</th>
+                                                                            <th>Edit</th>
+                                                                            <th>Delete</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <%
+                                                                    platforms[prop].forEach(function(item){ %>
+                                                                        <tr>
+                                                                            <td><%= item.config_parameter; %></td>
+                                                                            <td><%= item.friendly_name; %></td>
+                                                                            <td><%= item.value; %></td>
+                                                                            <td><select><option value="0" <%=(item.status == '0')?'selected' : ''%>>readonly</option><option value="1" <%=(item.status == '1')?'selected' : ''%>>writeable</option></select></td>
+                                                                            <td><a class="edit-row_<%= prop %>" href="javascript:;">Edit</a></td>
+                                                                            <td><a class="delete-row_<%= prop %>" href="javascript:;">Delete</a></td>
+                                                                        </tr>
+                                                                    <%
+                                                                    })
+                                                                    %>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <script type="text/javascript">
+                                                    $(document).ready(function(){
+                                                        runDataTable_example2('<%= prop %>');
+                                                    });
+                                                    
+                                                    </script>
+                                                <% }); %>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            <i class="fa fa-dot-circle-o"></i> Submit
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary btn-sm">
-                                        <i class="fa fa-dot-circle-o"></i> Submit
-                                    </button>
-                                </div>
-
-                            </div>
+                                
                         </form>
                     </div>
                 </div>
             </div><!-- .animated -->
         </div><!-- .content -->
     </div><!-- /#right-panel -->
-     <script>
+
+    <!-- <div class="modal fade" id="staticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticModalLabel">Static Modal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row form-group">
+                        <div class="col col-md-12">
+                            <div class="sufee-alert alert with-close alert-success alert-dismissible fade hide">
+                                
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-md-3"><label for="appname" class=" form-control-label">App Name</label></div>
+                                <div class="col-12 col-md-9"><input type="text" id="appname" name="appname" placeholder="Enter app name" class="form-control"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="dismissModal" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="javascript:confirmAppName();">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+     <script type="text/javascript">
+     function showAlert(){
+        bootbox.prompt({ 
+            size: "small",
+            title: "What is the name of app?", 
+            callback: function(result){
+                 /* result = String containing user input if OK clicked or null if Cancel clicked */ 
+                 if(result != null){
+                    if(result == ''){
+                        bootbox.alert("please provide app name");
+                        return false;
+                    }
+                    else{
+                        var bodyofContainer = '<input class="platformName" name="platformName" type="hidden" value="'+result+'"/><button class="btn btn-green add-row_'+result+'">'+
+                                        'Add New <i class="fa fa-plus"></i>'+
+                                        '</button><table class="table table-striped table-hover platforms" id="'+result+'">'+
+                                    '<thead>'+
+                                        '<tr>'+
+                                                '<th>Config Parameter</th>'+
+                                                '<th>Friendly Name</th>'+
+                                                '<th>Value</th>'+
+                                                '<th>Readonly/Writeable</th>'+
+                                                '<th>Edit</th>'+
+                                                '<th>Delete</th>'+
+                                        '</tr>'+
+                                    '</thead>'+
+                                    '<tbody>'+		
+                                    '</tbody>'+
+                                    '</table>';
+                        var container = "<div class='card' id='card_"+result+"'>"+
+                                "<div class='card-header'><button type='button' onclick=\"javascript:removePlatform('"+result+"')\" class='bootbox-close-button close' aria-hidden='true'>×</button>"+ result +
+                                    "</div>"+
+                                    "<div class='card-body card-block'>"+bodyofContainer
+                                            "</div>"+
+                                            "</div>";
+                        $("#PlatformContainer").append(container);
+                        //$('#sample_2').dataTable();
+                        runDataTable_example2(result);
+                    }
+                 }
+                
+            }
+        })
+     }
+    $("#staticModal").on("shown.bs.modal", function () { 
+        $("#appname").val('');
+    });
+    function removePlatform(name){
+        $("#card_" + name).remove();
+    }
     function randomPassword(length) {
-        var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890";
+        var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP1234567890";
         var pass = "";
         for (var x = 0; x < length; x++) {
             var i = Math.floor(Math.random() * chars.length);
@@ -60,6 +208,17 @@
         }
         return pass;
     }
+    $('#chk1').change(function() {
+        $("#status").val($(this).prop('checked'));
+    })
+    function customerchannel(){
+        $("#channel").val($(".chosen-single span").text());
+    }
+    jQuery(".standardSelect").chosen({
+        disable_search_threshold: 10,
+        no_results_text: "Oops, nothing found!",
+        width: "100%"
+    });
      $("#generateUnicode").click(function(){
         $("#customerid").val(randomPassword(8));
      });
@@ -72,6 +231,9 @@
                         required: true,
                         minlength : 5
                     }
+                    ,customerchannel:{
+                        required : true
+                    }
                 },
                 messages: {
                     customerid : {
@@ -80,9 +242,205 @@
                     customername: {
                         required : "Please provide customer name",
                         minlength : "The min length is 5."
+                    },
+                    customerchannel : {
+                        required : true
                     }
+                },
+                submitHandler: function (form) {
+                    // submit form
+                    console.log(form);
+                    var plts = [];
+                    $(".platforms").each(function(){
+                        var ele = $(this);
+                        var platform_name = ele.attr('id');
+                        $('#'+platform_name+' > tbody  > tr').each(function() {
+                            var $tds = $(this).find('td');
+                            var item = {
+                                'app_title': platform_name,
+                                'config_parameter' : $tds.eq(0).text(),
+                                'friendly_name' : $tds.eq(1).text(),
+                                'value' : $tds.eq(2).text(),
+                                'status' : $tds.eq(3).find('select').val()
+                            }
+                            plts.push(item);
+                        });
+                    });
+                    console.log(JSON.stringify(plts));
+                    //$(form).submit();
+                    $("#platform_st").val(JSON.stringify(plts));
+                    $(form).submit();
                 }
             });
+
+            
+    var runDataTable_example2 = function(tbname) {
+		var newRow = false;
+		var actualEditingRow = null;
+
+		function restoreRow(oTable, nRow) {
+			var aData = oTable.fnGetData(nRow);
+			var jqTds = $('>td', nRow);
+
+			for (var i = 0, iLen = jqTds.length; i < iLen; i++) {
+				oTable.fnUpdate(aData[i], nRow, i, false);
+			}
+
+			oTable.fnDraw();
+		}
+
+		function editRow(oTable, nRow) {
+			var aData = oTable.fnGetData(nRow);
+			var jqTds = $('>td', nRow);
+			jqTds[0].innerHTML = '<input type="text" class="form-control" value="' + aData[0] + '">';
+			jqTds[1].innerHTML = '<input type="text" class="form-control" value="' + aData[1] + '">';
+			jqTds[2].innerHTML = '<input type="text" class="form-control" value="' + aData[2] + '">';
+            jqTds[3].innerHTML = '<select><option value="0">readonly</option><option value="1">writeable</option></select>';
+			jqTds[4].innerHTML = '<a class="save-row_'+tbname+'" href="javascript:;">Save</a>';
+			jqTds[5].innerHTML = '<a class="cancel-row_'+tbname+'" href="javascript:;">Cancel</a>';
+
+		}
+
+		function saveRow(oTable, nRow) {
+            var jqInputs = $('input', nRow);
+            var jqSelect = $('select', nRow);
+			oTable.fnUpdate(jqInputs[0].value, nRow, 0, false);
+			oTable.fnUpdate(jqInputs[1].value, nRow, 1, false);
+            oTable.fnUpdate(jqInputs[2].value, nRow, 2, false);
+            //oTable.fnUpdate(jqInputs[3].value, nRow, 3, false);
+			oTable.fnUpdate('<a class="edit-row_'+tbname+'" href="javascript:;">Edit</a>', nRow, 4, false);
+			oTable.fnUpdate('<a class="delete-row_'+tbname+'" href="javascript:;">Delete</a>', nRow, 5, false);
+			oTable.fnDraw();
+			newRow = false;
+			actualEditingRow = null;
+		}
+
+		$('body').on('click', '.add-row_'+tbname, function(e) {
+			e.preventDefault();
+			if (newRow == false) {
+				if (actualEditingRow) {
+					restoreRow(oTable, actualEditingRow);
+				}
+				newRow = true;
+				var aiNew = oTable.fnAddData(['', '', '', '', '','']);
+				var nRow = oTable.fnGetNodes(aiNew[0]);
+				editRow(oTable, nRow);
+				actualEditingRow = nRow;
+			}
+		});
+		$('#' + tbname).on('click', '.cancel-row_'+tbname, function(e) {
+
+			e.preventDefault();
+			if (newRow) {
+				newRow = false;
+				actualEditingRow = null;
+				var nRow = $(this).parents('tr')[0];
+				oTable.fnDeleteRow(nRow);
+
+			} else {
+				restoreRow(oTable, actualEditingRow);
+				actualEditingRow = null;
+			}
+		});
+		$('#' + tbname).on('click', '.delete-row_'+tbname, function(e) {
+			e.preventDefault();
+			if (newRow && actualEditingRow) {
+				oTable.fnDeleteRow(actualEditingRow);
+				newRow = false;
+
+			}
+			var nRow = $(this).parents('tr')[0];
+			bootbox.confirm("Are you sure to delete this row?", function(result) {
+				if (result) {
+					$.blockUI({
+					message : '<i class="fa fa-spinner fa-spin"></i> Do some ajax to sync with backend...'
+					});
+					// $.mockjax({
+					// 	url : '/tabledata/delete/webservice',
+					// 	dataType : 'json',
+					// 	responseTime : 1000,
+					// 	responseText : {
+					// 		say : 'ok'
+					// 	}
+					// });
+					// $.ajax({
+					// 	url : '/tabledata/delete/webservice',
+					// 	dataType : 'json',
+					// 	success : function(json) {
+					// 		$.unblockUI();
+					// 		if (json.say == "ok") {
+					// 		oTable.fnDeleteRow(nRow);
+					// 		}
+					// 	}
+                    // });		
+                    $.unblockUI();		
+					oTable.fnDeleteRow(nRow);
+				}
+			});
+			
+
+			
+		});
+		$('#' + tbname).on('click', '.save-row_'+tbname, function(e) {
+			e.preventDefault();
+
+            var nRow = $(this).parents('tr')[0];
+			$.blockUI({
+					message : '<i class="fa fa-spinner fa-spin"></i> Do some ajax to sync with backend...'
+                    });
+                    $.unblockUI();
+                    saveRow(oTable, nRow);
+			// 		$.mockjax({
+			// 			url : '/tabledata/add/webservice',
+			// 			dataType : 'json',
+			// 			responseTime : 1000,
+			// 			responseText : {
+			// 				say : 'ok'
+			// 			}
+			// 		});
+			// 		$.ajax({
+			// 			url : '/tabledata/add/webservice',
+			// 			dataType : 'json',
+			// 			success : function(json) {
+			// 				$.unblockUI();
+			// 				if (json.say == "ok") {
+			// 					saveRow(oTable, nRow);
+			// 				}
+			// 			}
+			// 		});	
+		});
+		$('#' + tbname).on('click', '.edit-row_'+tbname, function(e) {
+			e.preventDefault();
+			if (actualEditingRow) {
+				if (newRow) {
+					oTable.fnDeleteRow(actualEditingRow);
+					newRow = false;
+				} else {
+					restoreRow(oTable, actualEditingRow);
+
+				}
+			}
+			var nRow = $(this).parents('tr')[0];
+			editRow(oTable, nRow);
+			actualEditingRow = nRow;
+
+		});
+		var oTable = $('#' + tbname).dataTable({
+            
+        });
+		$('#' + tbname + '_wrapper .dataTables_filter input').addClass("form-control input-sm").attr("placeholder", "Search");
+		// modify table search input
+		$('#' + tbname + '_wrapper .dataTables_length select').addClass("m-wrap small");
+		// modify table per page dropdown
+		$('#' + tbname + '_wrapper .dataTables_length select').select2();
+		// initialzie select2 dropdown
+		$('#' + tbname + '_column_toggler input[type="checkbox"]').change(function() {
+			/* Get the DataTables object again - this is not a recreation, just a get of the object */
+			var iCol = parseInt($(this).attr("data-column"));
+			var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
+			oTable.fnSetColumnVis(iCol, ( bVis ? false : true));
+		});
+	};
      </script>
  
      <!-- Right Panel -->

@@ -9,7 +9,9 @@
                 console.log(data);
                 var html = '';
                 data.forEach(element => {
-                    html += '<tr><td>' +element.customer_id + '</td><td>' +element.name + '</td><td><a href="/admin/customers/delete/'+element.id+'" class="btn btn-outline-danger">Delete</button></td></tr>'
+                    var status = (element.status == '0')? 'disabled':'enabled';
+                    html += '<tr><td>' +element.channel + '</td><td>' +element.customer_id + '</td><td>' +element.name + '</td><td>' +status + '</td><td>' +element.platforms + '</td><td><a href="/admin/customers/delete/'+element.id+'" class="btn btn-outline-danger">Delete</a><a href="/admin/customers/edit/'
+                +element.id+'" class="btn btn-outline-info">Edit</a></td></tr>'
                 });
                 $("#example tbody").html(html);
                 $('#example').DataTable();
