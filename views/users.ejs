@@ -25,7 +25,7 @@
                                             <th>Full Name</th>
                                             <th>Email Address</th>
                                             <th>Phone number</th>
-                                            <th>Channels</th>
+                                            <th>Customers</th>
                                             <th>Last Login</th>
                                             <th>Action</th>
                                         </tr>
@@ -52,10 +52,10 @@
                 +element.username + '</td><td>'
                 +element.email+'</td><td>'
                 +element.phone_number+'</td><td>'
-                +element.channels+'</td><td>'
+                +element.customers+'</td><td>'
                 +element.last_login.replace("T"," ").replace(".000Z","")+'</td><td><a href="/admin/users/delete/'
-                +element.id+'" class="btn btn-outline-danger">Delete</button><a href="/admin/users/edit/'
-                +element.id+'" class="btn btn-outline-info">Edit</button></td></tr>'
+                +element.id+'" class="btn btn-outline-danger">Delete</a><a href="/admin/users/edit/'
+                +element.id+'" class="btn btn-outline-info">Edit</a></td></tr>'
         });
         $("#users tbody").html(html);
         $('#users').DataTable();
