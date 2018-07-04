@@ -387,6 +387,19 @@ router.get('/admin/users', verifyJWT, (req , res) => {
     res.json(rows);
   });
 })
+router.get('/monetization/getpackages', verifyJWT, (req , res) => {
+  connection.query("select * from package", (err, rows) => {
+    if (err) { console.log(err) }
+    res.json(rows);
+  });
+})
+router.get('/monetization/deletePackage',verifyJWT,(req,res)=>{
+  var packcageId = req.param('packageId');
+  var sql1 = "DELETE FROM package WHERE id="+packcageId;
+  var sql2 = "DELETE FROM package_sub WHERE packageId="+packcageId;
+  connection.query(sql1,(err,result)=>{});
+  connection.query(sql2,(err,result)=>{var response = {"err":0,success:true};res.json(response);});
+})
 
 router.get('/admin/users/delete/:userid', verifyJWT, (req , res) => {
   connection.query("delete from user where id='"+ req.params.userid +"'" , (err, rows) => {
