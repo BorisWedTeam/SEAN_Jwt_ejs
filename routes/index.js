@@ -12,8 +12,8 @@ var dateTime = require('node-datetime');
 
 const { verifyJWT, unVerifyJWT } = require('../helpers/auth');
 
-var config = require('../config/config.js')
-
+var config = require('../config/config.js');
+var constants = require('../config/constant.js');
 var connection = mysql.createConnection({
   host: config.localhost,
   user: config.user,
@@ -40,6 +40,53 @@ router.get('/', unVerifyJWT, (req, res) => {
 
 router.get('/login', unVerifyJWT, (req, res) => {
   res.render('login');
+})
+router.get('/monetization/subscription',verifyJWT,(req,res)=>{
+  res.render('subscription');
+})
+router.get('/monetization/savdAd',verifyJWT,(req,res)=>{
+  var preRollUrl = req.query.preRollInput;
+  var preRollCheck = req.query.preRollCheck?1:0;
+  var midRollUrl = req.query.midRollInput;
+  var midRollCheck = req.query.midRollCheck?1:0;
+  var postRollUrl = req.query.postRollInput;
+  var postRollCheck = req.query.postRollCheck?1:0;
+  var displayAds = req.query.displayAds;
+  var displayAdsCheck = req.query.displayAdsCheck?1:0;
+
+  var sql1 = "UPDATE advertisement SET colValue='"+preRollUrl+"',colCheck="+preRollCheck+" WHERE colName='"+constants.PRE_ROLL_COL+"' ";
+  connection.query(sql1,(err,result)=>{console.log(err);});
+  var sql2 = "UPDATE advertisement SET colValue='"+midRollUrl+"',colCheck="+midRollCheck+" WHERE colName='"+constants.MID_ROLL_COL+"' ";
+  connection.query(sql2,(err,result)=>{console.log(err);});
+  var sql3 = "UPDATE advertisement SET colValue='"+postRollUrl+"',colCheck="+postRollCheck+" WHERE colName='"+constants.POST_ROLL_COL+"' ";
+  connection.query(sql3,(err,result)=>{console.log(err);});
+  var sql4 = "UPDATE advertisement SET colValue='"+displayAds+"',colCheck="+displayAdsCheck+" WHERE colName='"+constants.DISPLAY_ADS_COL+"' ";
+  connection.query(sql4,(err,result)=>{
+    console.log(err);
+    res.redirect('/monetization/advertisement')
+  });
+
+
+})
+router.get('/monetization/advertisement',verifyJWT,(req,res)=>{
+  connection.query("SELECT * FROM advertisement", (err, rows) => {
+    if (err) { console.log(err) }
+    if (rows.length > 0) {
+      var data ={
+        preRollUrl:rows[0].colValue,
+        preRollCheck:rows[0].colCheck,
+        midRollUrl:rows[1].colValue,
+        midRollCheck:rows[1].colCheck,
+        postRollUrl:rows[2].colValue,
+        postRollCheck:rows[2].colCheck,
+        displayAdsValue:rows[3].colValue,
+        displayAdsCheck:rows[3].colCheck
+      }
+      // console.log(rows);
+      // console.log(data);
+      res.render('advertisement',data);
+    }
+  });
 })
 
 router.post('/login', function (req, res, next) {
@@ -268,7 +315,6 @@ router.get('/admin/customers/edit/:customerid', verifyJWT, (req, res) => {
 });
 
 router.get('/admin/customers/delete/:customerid', verifyJWT, (req, res) => {
-    
     connection.query("delete from customers where id='"+ req.params.customerid +"'" , (err, rows) => {
         if (err) { console.log(err) }
         res.render('customers');
@@ -340,6 +386,22 @@ router.get('/admin/users', verifyJWT, (req , res) => {
     res.json(rows);
   });
 })
+router.get('/monetization/getpackages', verifyJWT, (req , res) => {
+  connection.query("select * from package", (err, rows) => {
+    if (err) { console.log(err) }
+    res.json(rows);
+  });
+})
+router.get('/monetization/deletePackage',verifyJWT,(req,res)=>{
+  var packcageId = req.param('packageId');
+  var sql1 = "DELETE FROM package WHERE id="+packcageId;
+  var sql2 = "DELETE FROM package_sub WHERE packageId="+packcageId;
+  connection.query(sql1,(err,result)=>{});
+  connection.query(sql2,(err,result)=>{var response = {"err":0,success:true};res.json(response);});
+})
+router.get('/monetization/addMonetization',verifyJWT,(req,res)=>{
+  res.render('addMonetization');
+})
 
 router.get('/admin/users/delete/:userid', verifyJWT, (req , res) => {
   connection.query("delete from user where id='"+ req.params.userid +"'" , (err, rows) => {
@@ -352,6 +414,13 @@ router.get('/admin/users/edit/:userid', verifyJWT, (req , res) => {
     connection.query("select * from user where id= '"+req.params.userid+"'", (err, rows) => {
         if (err) { console.log(err) }
         var user = rows[0];
+        var customers_array = [];
+        if(typeof user.customers !== 'undefined' && user.customers != ""){
+          customers_array = user.customers.split(",")
+        }
+        var customers = JSON.stringify(customers_array);
+        user.customers = customers;
+        console.log(user);
         connection.query("select * from customers", (err, rows) => {
           if (err) { console.log(err) }
           res.render('usersadd', {data : user, customers: rows})
@@ -396,10 +465,18 @@ router.post('/admin/users/edit', verifyJWT, (req, res) => {
     var hash = crypto.createHash('sha256').update(req.body.password).digest('base64');;
     var phone = req.body.phone;
     var customers = req.body.user_channels;
-    var updateQuery = "Update user SET email = '"+email+"', username = '"+username+"', phone_number = '"+phone+"', password = '"+hash+"', customers = '"+customers+"' where id = '"+id+"'";
+    if(req.body.password != '*****'){
+      var updateQuery = "Update user SET email = '"+email+"', username = '"+username+"', phone_number = '"+phone+"', password = '"+hash+"', customers = '"+customers+"' where id = '"+id+"'";
       connection.query(updateQuery, function (err, rows) {
-        res.redirect('/users');
-    });
+          res.redirect('/users');
+      });
+    }
+    else{
+      var updateQuery = "Update user SET email = '"+email+"', username = '"+username+"', phone_number = '"+phone+"', customers = '"+customers+"' where id = '"+id+"'";
+      connection.query(updateQuery, function (err, rows) {
+          res.redirect('/users');
+      });
+    }
 })
 
 module.exports = router;
