@@ -3,6 +3,7 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+
             //get customers
             $.getJSON( "/admin/customers", function( data ) {
                 console.log(data);
@@ -36,6 +37,8 @@
                     email: "Please enter a valid email address"
                 }
             });
+
+
         } );
     </script>
 

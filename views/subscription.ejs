@@ -1,0 +1,47 @@
+ <!-- Right Panel -->
+
+ <%- include include/header.ejs %>
+
+ <%- include include/sidebar.ejs %>
+ 
+ <div id="right-panel" class="right-panel">
+
+        <%- include include/topnav.ejs %>
+
+        
+        <div class="content mt-3">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title">Subscriptions</strong>
+                            </div>
+                            <div class="card-body">
+                                <a href="/monetization/addMonetization" class="btn btn-primary">Add</a>
+                                <br/><br/>
+                                <table id="subscriptionTable" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Pacakge ID</th>
+                                            <th>Name</th>
+                                            <th>Details</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .animated -->
+        </div><!-- .content -->
+    </div><!-- /#right-panel -->
+     
+    <script src="/assets/js/subscriptions.js"></script>
+
+     <!-- Right Panel -->
+     <%- include include/footer.ejs %>
+ 

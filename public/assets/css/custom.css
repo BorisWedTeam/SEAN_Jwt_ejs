@@ -1,0 +1,25 @@
+ul.sub-menu li.active{
+    background-color:#e74c3c;
+}
+div.popover-content{
+    text-align:center;
+    padding-top:7px;
+    padding-bottom:7px;
+}
+div.popover{
+    padding:5px;
+}
+button.close{
+    position: absolute;
+    right: 13px;
+    top:8px;
+}
+.modal-title{
+    margin:auto;
+}
+div.marginForm{
+    margin-top:13px;
+}
+div.modal-dialog{
+    max-width:800px;
+}

@@ -10,3 +10,4 @@ $("#btnLogin").click(function(event) {
     
     form.addClass('was-validated');
   });
+

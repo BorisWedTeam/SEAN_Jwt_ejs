@@ -34,5 +34,13 @@ jQuery(document).ready(function($) {
 	// 	$('.user-menu').parent().toggleClass('open');
 	// });
 
-
+	var pathname = window.location.pathname;
+	console.log(pathname);
+	var element = $('.sub-menu > li > a[href="'+pathname+'"]');//.parent().addClass('active');
+	element.parent().addClass('active');
+	var ulMenu = element.parent().parent().parent();
+	ulMenu.addClass('show');
+	//ulMenu.first().attr('aria-expanded',true);
+	element.parent().parent().prev().attr('aria-expanded',true);
+	element.parent().parent().addClass('show');
 });
