@@ -1,0 +1,95 @@
+ <!-- Right Panel -->
+
+ <%- include include/header.ejs %>
+
+ <%- include include/sidebar.ejs %>
+ 
+ <div id="right-panel" class="right-panel">
+
+        <%- include include/topnav.ejs %>
+
+        
+        <div class="content mt-3">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title">Subscriptions</strong>
+                            </div>
+                            <div class="card-body">
+                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add</a>
+                                <br/><br/>
+                                <div class="row">
+                                    <div class="col-md-3 text-right">title</div>
+                                    <div class="col-md-6"><input type="text" class="form-control" /></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 text-right">title</div>
+                                    <div class="col-md-6"><input type="text" /></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .animated -->
+        </div><!-- .content -->
+    </div><!-- /#right-panel -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row marginForm">
+                    <div class="col-md-3 text-right">Country</div>
+                    <div class="col-md-6">
+                        <select id="country" class="form-control">
+                            <option value="1">United State</option>
+                            <option value="2">France</option>
+                            <option value="3">German</option>
+                            <option value="4">United Kingdom</option>
+                            <option value="5">Canada</option>
+                        </select>
+                    </div>
+                </div>    
+                <div class="row marginForm">
+                    <div class="col-md-3 text-right">Title</div>
+                    <div class="col-md-6"><input type="text" id="name" class="form-control"/></div>
+                </div>
+                <div class="row marginForm">
+                    <div class="col-md-3 text-right">Price</div>
+                    <div class="col-md-6"><input type="text" id="name" class="form-control"/></div>
+                </div>
+
+                <div class="row marginForm">
+                    <div class="col-md-3 text-right">Description</div>
+                    <div class="col-md-6"><textarea type="text" id="name" class="form-control" rows=3></textarea></div>
+                </div>
+                <div class="row marginForm">
+                    <div class="col-md-3 text-right">Duration</div>
+                    <div class="col-md-6"><input type="text" id="name" class="form-control"/></div>
+                </div>
+        
+                <div class="row marginForm">
+                    <div class="col-md-3 text-right">Package Id</div>
+                    <div class="col-md-6"><input type="text" id="name" class="form-control"/></div>
+                </div>
+                <div class="row marginForm">
+                    <div class="col-md-3 text-right">Banner </div>
+                    <div class="col-md-6"><input type="file" id="name" class="form-control"/></div>
+                </div>
+    
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        
+        </div>
+    </div>
+
+     <%- include include/footer.ejs %>
+ 

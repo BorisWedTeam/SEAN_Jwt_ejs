@@ -315,7 +315,6 @@ router.get('/admin/customers/edit/:customerid', verifyJWT, (req, res) => {
 });
 
 router.get('/admin/customers/delete/:customerid', verifyJWT, (req, res) => {
-    
     connection.query("delete from customers where id='"+ req.params.customerid +"'" , (err, rows) => {
         if (err) { console.log(err) }
         res.render('customers');
@@ -399,6 +398,9 @@ router.get('/monetization/deletePackage',verifyJWT,(req,res)=>{
   var sql2 = "DELETE FROM package_sub WHERE packageId="+packcageId;
   connection.query(sql1,(err,result)=>{});
   connection.query(sql2,(err,result)=>{var response = {"err":0,success:true};res.json(response);});
+})
+router.get('/monetization/addMonetization',verifyJWT,(req,res)=>{
+  res.render('addMonetization');
 })
 
 router.get('/admin/users/delete/:userid', verifyJWT, (req , res) => {
