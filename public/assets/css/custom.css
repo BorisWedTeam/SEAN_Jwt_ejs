@@ -1,5 +1,6 @@
 ul.sub-menu li.active{
-    background-color:#e74c3c;
+    color: #fff !important;
+    text-decoration: none;
 }
 div.popover-content{
     text-align:center;

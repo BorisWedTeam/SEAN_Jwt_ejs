@@ -414,6 +414,13 @@ router.get('/admin/users/edit/:userid', verifyJWT, (req , res) => {
     connection.query("select * from user where id= '"+req.params.userid+"'", (err, rows) => {
         if (err) { console.log(err) }
         var user = rows[0];
+        var customers_array = [];
+        if(typeof user.customers !== 'undefined' && user.customers != ""){
+          customers_array = user.customers.split(",")
+        }
+        var customers = JSON.stringify(customers_array);
+        user.customers = customers;
+        console.log(user);
         connection.query("select * from customers", (err, rows) => {
           if (err) { console.log(err) }
           res.render('usersadd', {data : user, customers: rows})
@@ -458,10 +465,18 @@ router.post('/admin/users/edit', verifyJWT, (req, res) => {
     var hash = crypto.createHash('sha256').update(req.body.password).digest('base64');;
     var phone = req.body.phone;
     var customers = req.body.user_channels;
-    var updateQuery = "Update user SET email = '"+email+"', username = '"+username+"', phone_number = '"+phone+"', password = '"+hash+"', customers = '"+customers+"' where id = '"+id+"'";
+    if(req.body.password != '*****'){
+      var updateQuery = "Update user SET email = '"+email+"', username = '"+username+"', phone_number = '"+phone+"', password = '"+hash+"', customers = '"+customers+"' where id = '"+id+"'";
       connection.query(updateQuery, function (err, rows) {
-        res.redirect('/users');
-    });
+          res.redirect('/users');
+      });
+    }
+    else{
+      var updateQuery = "Update user SET email = '"+email+"', username = '"+username+"', phone_number = '"+phone+"', customers = '"+customers+"' where id = '"+id+"'";
+      connection.query(updateQuery, function (err, rows) {
+          res.redirect('/users');
+      });
+    }
 })
 
 module.exports = router;
