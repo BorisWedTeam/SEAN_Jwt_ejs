@@ -39,6 +39,28 @@
                     </a>
                 </div>
                 <div class="login-form">
+                    
+                        <% if(typeof errors != "undefined" && errors.length > 0) {%>
+                            <% errors.forEach(function(error){ %>
+                                <div class="sufee-alert alert with-close alert-warning alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-warning">Warning</span>
+                                        <%= error.text; %>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                            <% })%>
+                        <% } %>
+                        <% if(typeof errors != "undefined" && errors.length == 0) {%>
+                            <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+                                <span class="badge badge-pill badge-success">Success</span>
+                                    Your account created successfully. please <a href="/">link</a> to login.
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                        <% } %>
+                    
                     <form action="/register" method="POST" id="registerForm">
                         <div class="form-group">
                             <label>User Name</label>
@@ -91,7 +113,7 @@
                 rules: {
                     username:{
                         required : true,
-                        minlength : 2
+                        minlength : 4
                     },
                     password: {
                         required: true,
@@ -108,7 +130,7 @@
                 messages: {
                     username : {
                         required : "Please provide username",
-                        minlength : "please type at least 2 chracters"
+                        minlength : "please type at least 4 chracters"
                     },
                     password: {
                         required: "Please provide a password",
