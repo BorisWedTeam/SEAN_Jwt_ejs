@@ -169,20 +169,28 @@ router.post('/register', (req, res) => {
           password: req.body.password
         })
       }
-      var newUserMysql = new Object();
+      else{
+        var newUserMysql = new Object();
 
-      newUserMysql.email = req.body.email;
-      newUserMysql.username = req.body.username;
-      newUserMysql.password = req.body.password;
-      newUserMysql.phone = req.body.phone;
-
-      var hash = crypto.createHash('sha256').update(req.body.password).digest('base64');
-      newUserMysql.password = hash;
-      var insertQuery = "INSERT INTO user ( email, username, password , phone_number ) values ('" + req.body.email + "','" + req.body.username + "','" + newUserMysql.password + "','" + newUserMysql.phone + "')";
-      connection.query(insertQuery, function (err, rows) {
-        req.flash('success_msg', 'User Registered');
-        res.redirect('/');
-      });
+        newUserMysql.email = req.body.email;
+        newUserMysql.username = req.body.username;
+        newUserMysql.password = req.body.password;
+        newUserMysql.phone = req.body.phone;
+  
+        var hash = crypto.createHash('sha256').update(req.body.password).digest('base64');
+        newUserMysql.password = hash;
+        var insertQuery = "INSERT INTO user ( email, username, password , phone_number ) values ('" + req.body.email + "','" + req.body.username + "','" + newUserMysql.password + "','" + newUserMysql.phone + "')";
+        connection.query(insertQuery, function (err, rows) {
+          req.flash('success_msg', 'User Registered');
+          res.render('register', {
+            errors: errors,
+            name: req.body.username,
+            email: req.body.email,
+            password: req.body.password
+          })
+        });
+      }
+      
 
     }
   })
