@@ -7,7 +7,8 @@ jQuery(document).ready(function($) {
         element.confirmation('dispose');
     }
     function drawTable(){
-        $.getJSON( "/monetization/getpackages", function( data ) {
+        var selectCustomerId = localStorage['selectCustomerId'];
+        $.getJSON( "/monetization/getpackages?customerId="+selectCustomerId, function( data ) {
             console.log(data);
             var html = '';
             //$('#subscriptionTable').DataTable({searching: false,"bDestroy": true});

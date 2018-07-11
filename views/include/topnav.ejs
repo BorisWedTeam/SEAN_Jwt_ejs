@@ -5,7 +5,12 @@
 
             <div class="col-sm-7">
                 <a id="menuToggle" class="menutoggle pull-left"><i class="fa fa fa-tasks"></i></a>
-                
+                Select Customer is : <b id="selectCustomerName"></b>
+                <span style="visibility: hidden;">
+                    <% user.customers.forEach(function(customer){ %>
+                        <a href="#" id="btnCustomer<%=customer.id %>" class="btn btn-primary btnCustomer" onclick="selectCustomer(<%=customer.id %>)"><%=customer.name%></a>
+                    <% }); %>
+                </span>        
             </div>
 
             <div class="col-sm-5">
@@ -15,15 +20,24 @@
                     </a>
 
                     <div class="user-menu dropdown-menu">
-
                             <a class="nav-link" href="/logout"><i class="fa fa-power -off"></i>Logout</a>
                     </div>
                 </div>
-
-                
 
             </div>
         </div>
 
     </header><!-- /header -->
     <!-- Header-->
+    <script type="text/javascript">
+        var selectCustomerName = localStorage["selectCustomerName"];
+        var selectCustomerId = localStorage["selectCustomerId"];
+        if(selectCustomerId ==null||selectCustomerId==''||selectCustomerId==undefined||selectCustomerId<1){
+            selectCustomerId = '<%=user.customers[0].id%>';
+            selectCustomerName = '<%=user.customers[0].name%>';
+            localStorage["selectCustomerName"] = selectCustomerId;
+            localStorage["selectCustomerId"] = selectCustomerId;
+        }
+        console.log('selectCustomerId is '+selectCustomerId);
+        selectCustomer(selectCustomerId);
+    </script>

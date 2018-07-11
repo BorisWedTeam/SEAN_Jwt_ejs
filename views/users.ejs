@@ -48,11 +48,12 @@
         console.log(data);
         var html = '';
         data.forEach(element => {
+            
             html += '<tr><td>' +element.id + '</td><td>' 
                 +element.username + '</td><td>'
                 +element.email+'</td><td>'
                 +element.phone_number+'</td><td>'
-                +element.customers+'</td><td>'
+                +(element.customers==null?'':element.customers)+'</td><td>'
                 +element.last_login.replace("T"," ").replace(".000Z","")+'</td><td><a href="/admin/users/delete/'
                 +element.id+'" class="btn btn-outline-danger">Delete</a><a href="/admin/users/edit/'
                 +element.id+'" class="btn btn-outline-info">Edit</a></td></tr>'

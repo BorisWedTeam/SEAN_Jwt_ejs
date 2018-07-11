@@ -35,12 +35,15 @@
                                 <div class="row form-group">
                                     <div class="col col-md-3"><label for="phone" class=" form-control-label">Channels</label></div>
                                     <div class="col-12 col-md-9">
-                                            
                                         <select id="customerSelect" data-placeholder="Choose a customer..." multiple class="standardSelect" onchange="javascript:pickchannel();">
                                             <option value=""></option>
-                                            <% customers.forEach(function(customer){ %>
-                                                <option value="<%= customer.name %>"><%= customer.name %></option>
-                                            <% })%>
+                                            <% customers.forEach(function(customer){
+                                                if(data.customers.includes('"'+customer.id+'"')){
+                                                 %>
+                                                 <option value="<%= customer.id %>" selected><%= customer.name %></option>
+                                                 <% } else { %>
+                                                <option value="<%= customer.id %>" ><%= customer.name %></option>
+                                            <% } })%>
                                         </select>
                                     </div>
                                 </div>

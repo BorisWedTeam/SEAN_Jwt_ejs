@@ -41,53 +41,6 @@ router.get('/', unVerifyJWT, (req, res) => {
 router.get('/login', unVerifyJWT, (req, res) => {
   res.render('login');
 })
-router.get('/monetization/subscription',verifyJWT,(req,res)=>{
-  res.render('subscription');
-})
-router.get('/monetization/savdAd',verifyJWT,(req,res)=>{
-  var preRollUrl = req.query.preRollInput;
-  var preRollCheck = req.query.preRollCheck?1:0;
-  var midRollUrl = req.query.midRollInput;
-  var midRollCheck = req.query.midRollCheck?1:0;
-  var postRollUrl = req.query.postRollInput;
-  var postRollCheck = req.query.postRollCheck?1:0;
-  var displayAds = req.query.displayAds;
-  var displayAdsCheck = req.query.displayAdsCheck?1:0;
-
-  var sql1 = "UPDATE advertisement SET colValue='"+preRollUrl+"',colCheck="+preRollCheck+" WHERE colName='"+constants.PRE_ROLL_COL+"' ";
-  connection.query(sql1,(err,result)=>{console.log(err);});
-  var sql2 = "UPDATE advertisement SET colValue='"+midRollUrl+"',colCheck="+midRollCheck+" WHERE colName='"+constants.MID_ROLL_COL+"' ";
-  connection.query(sql2,(err,result)=>{console.log(err);});
-  var sql3 = "UPDATE advertisement SET colValue='"+postRollUrl+"',colCheck="+postRollCheck+" WHERE colName='"+constants.POST_ROLL_COL+"' ";
-  connection.query(sql3,(err,result)=>{console.log(err);});
-  var sql4 = "UPDATE advertisement SET colValue='"+displayAds+"',colCheck="+displayAdsCheck+" WHERE colName='"+constants.DISPLAY_ADS_COL+"' ";
-  connection.query(sql4,(err,result)=>{
-    console.log(err);
-    res.redirect('/monetization/advertisement')
-  });
-
-
-})
-router.get('/monetization/advertisement',verifyJWT,(req,res)=>{
-  connection.query("SELECT * FROM advertisement", (err, rows) => {
-    if (err) { console.log(err) }
-    if (rows.length > 0) {
-      var data ={
-        preRollUrl:rows[0].colValue,
-        preRollCheck:rows[0].colCheck,
-        midRollUrl:rows[1].colValue,
-        midRollCheck:rows[1].colCheck,
-        postRollUrl:rows[2].colValue,
-        postRollCheck:rows[2].colCheck,
-        displayAdsValue:rows[3].colValue,
-        displayAdsCheck:rows[3].colCheck
-      }
-      // console.log(rows);
-      // console.log(data);
-      res.render('advertisement',data);
-    }
-  });
-})
 
 router.post('/login', function (req, res, next) {
   /* look at the 2nd parameter to the below call */
@@ -119,6 +72,7 @@ router.post('/login', function (req, res, next) {
           res.redirect('/login');
         }
         else if(type == '1'){
+          console.log(user);
           res.cookie('user', user)
           .redirect('/dashboard');
         }
@@ -298,7 +252,7 @@ router.get('/admin/customers/edit/:customerid', verifyJWT, (req, res) => {
           if (err) { console.log(err) }
           //picked_customer.platforms = JSON.stringify(rows);
           var rlt = {};
-          if(rows.length > 1){
+          if(rows.length > 0){
             
             rows.forEach(function(item){
               if(rlt[item.app_title]) rlt[item.app_title].push(item);
@@ -389,11 +343,67 @@ router.get('/admin/customers', verifyJWT, (req , res)=>{
 })
 
 router.get('/admin/users', verifyJWT, (req , res) => {
-  connection.query("select * from user where type = '1'", (err, rows) => {
+  connection.query("call getAllUserAdmins(1)", (err, rows) => {
     if (err) { console.log(err) }
-    res.json(rows);
+    var string=JSON.stringify(rows);
+    // console.log(string);
+    var json =  JSON.parse(string);
+    console.log(json);
+    // var rows = json[0];
+    // console.log(rows);
+    var finalRows = json[0];
+    res.json(finalRows);
   });
 })
+
+router.get('/monetization/subscription',verifyJWT,(req,res)=>{
+  res.render('subscription');
+})
+router.get('/monetization/savdAd',verifyJWT,(req,res)=>{
+  var preRollUrl = req.query.preRollInput;
+  var preRollCheck = req.query.preRollCheck?1:0;
+  var midRollUrl = req.query.midRollInput;
+  var midRollCheck = req.query.midRollCheck?1:0;
+  var postRollUrl = req.query.postRollInput;
+  var postRollCheck = req.query.postRollCheck?1:0;
+  var displayAds = req.query.displayAds;
+  var displayAdsCheck = req.query.displayAdsCheck?1:0;
+
+  var sql1 = "UPDATE advertisement SET colValue='"+preRollUrl+"',colCheck="+preRollCheck+" WHERE colName='"+constants.PRE_ROLL_COL+"' ";
+  connection.query(sql1,(err,result)=>{console.log(err);});
+  var sql2 = "UPDATE advertisement SET colValue='"+midRollUrl+"',colCheck="+midRollCheck+" WHERE colName='"+constants.MID_ROLL_COL+"' ";
+  connection.query(sql2,(err,result)=>{console.log(err);});
+  var sql3 = "UPDATE advertisement SET colValue='"+postRollUrl+"',colCheck="+postRollCheck+" WHERE colName='"+constants.POST_ROLL_COL+"' ";
+  connection.query(sql3,(err,result)=>{console.log(err);});
+  var sql4 = "UPDATE advertisement SET colValue='"+displayAds+"',colCheck="+displayAdsCheck+" WHERE colName='"+constants.DISPLAY_ADS_COL+"' ";
+  connection.query(sql4,(err,result)=>{
+    console.log(err);
+    res.redirect('/monetization/advertisement')
+  });
+
+
+})
+router.get('/monetization/advertisement',verifyJWT,(req,res)=>{
+  connection.query("SELECT * FROM advertisement", (err, rows) => {
+    if (err) { console.log(err) }
+    if (rows.length > 0) {
+      var data ={
+        preRollUrl:rows[0].colValue,
+        preRollCheck:rows[0].colCheck,
+        midRollUrl:rows[1].colValue,
+        midRollCheck:rows[1].colCheck,
+        postRollUrl:rows[2].colValue,
+        postRollCheck:rows[2].colCheck,
+        displayAdsValue:rows[3].colValue,
+        displayAdsCheck:rows[3].colCheck
+      }
+      // console.log(rows);
+      // console.log(data);
+      res.render('advertisement',data);
+    }
+  });
+})
+
 router.get('/monetization/getpackages', verifyJWT, (req , res) => {
   connection.query("select * from package", (err, rows) => {
     if (err) { console.log(err) }

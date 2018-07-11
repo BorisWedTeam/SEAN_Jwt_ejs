@@ -37,12 +37,18 @@ module.exports = function (passport) {
               newUserMysql.password = rows[0].password;
               newUserMysql.type = rows[0].type;
               newUserMysql.token = '';
-
               jwt.sign({
                 data: newUserMysql
               }, 'secrethhhhh', { expiresIn: 3000 }, (err, token) => {
                 newUserMysql.token = token;
-                return done(null, newUserMysql);
+                var sql = "SELECT id,name FROM customers WHERE id in ("+rows[0].customers+")";
+                console.log(sql);
+                connection.query(sql, (err, crows) => {
+                  var customers = crows;
+                  newUserMysql.customers = customers;
+                  return done(null, newUserMysql);
+                });
+                
               });
             } else {
               return done(null, false, { message: 'Password Incorrect' });

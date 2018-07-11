@@ -1,5 +1,4 @@
 $.noConflict();
-
 jQuery(document).ready(function($) {
 
 	"use strict";
@@ -44,3 +43,17 @@ jQuery(document).ready(function($) {
 	element.parent().parent().prev().attr('aria-expanded',true);
 	element.parent().parent().addClass('show');
 });
+
+function selectCustomer(customerId){
+	$(".btnCustomer").removeClass("active");
+	$("#btnCustomer"+customerId).addClass("active");
+	var selectName = $("#btnCustomer"+customerId).html();
+	
+	$("#selectCustomerName").html(selectName);
+
+	localStorage['selectCustomerId'] = customerId;
+	localStorage['selectCustomerName'] = selectName;
+}
+function init(){
+	localStorage['selectCustomerId'] = 0;
+}

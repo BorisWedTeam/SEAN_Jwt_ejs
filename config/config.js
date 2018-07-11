@@ -1,6 +1,6 @@
 module.exports = {
-    localhost: '192.168.0.110',
+    localhost: 'localhost',
     user: 'root',
-    password: 'thisnewpassword',
+    password: '',
     database: 'playlist'
 }
