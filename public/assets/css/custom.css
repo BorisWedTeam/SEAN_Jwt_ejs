@@ -2,6 +2,11 @@ ul.sub-menu li.active{
     color: #fff !important;
     text-decoration: none;
 }
+ul.sub-menu li.active > a{
+    color:#fff !important;
+    font-weight: bold;
+    background-color:#555 !important;
+}
 div.popover-content{
     text-align:center;
     padding-top:7px;
@@ -26,4 +31,40 @@ div.modal-dialog{
 }
 .btn.btn-primary:not([disabled]):not(.disabled).active{
     background-color:#0042ac;
+}
+.marginTop10{
+    margin-top:10px;
+}
+.languageTitle{
+    padding: 12px 18px;
+    color:white;
+}
+.collapsible {
+    color: white;
+    cursor: pointer;
+    padding: 12px 18px;
+    border: none;
+    text-align: left;
+    font-size: 15px;
+    background-color:#777;
+    position: absolute;
+    right:80px;
+    margin-top:-47px;
+}
+.remove{
+    position: absolute;
+    right:50px;
+    margin-top:10px;
+    background-color:#777;
+    color:white;
+    border:none;
+}
+.collapsibleParent{
+    width:100%;
+    background-color: #777;
+    margin-top:10px;
+}
+#btnAddLanguage{
+    position: absolute;
+    right:50px;
 }

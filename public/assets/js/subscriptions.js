@@ -17,7 +17,7 @@ jQuery(document).ready(function($) {
                     +element.title + '</td><td>'
                     +element.details+'</td><td>'
                     +'<a href="#" + data-id="'
-                    +element.id+'" class="btn btn-outline-danger toggleConfirm" data-toggle="confirmation" data-title="Sure Delete?" data-popout="true">Delete</a><a href="/admin/users/edit/'
+                    +element.id+'" class="btn btn-outline-danger toggleConfirm" data-toggle="confirmation" data-title="Sure Delete?" data-popout="true">Delete</a><a href="/monetization/editPack/'
                     +element.id+'" class="btn btn-outline-info">Edit</a></td></tr>'
             });
             $("#subscriptionTable tbody").html(html);

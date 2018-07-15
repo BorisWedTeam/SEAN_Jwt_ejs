@@ -405,20 +405,133 @@ router.get('/monetization/advertisement',verifyJWT,(req,res)=>{
 })
 
 router.get('/monetization/getpackages', verifyJWT, (req , res) => {
-  connection.query("select * from package", (err, rows) => {
+  var customerId = req.query.customerId;
+
+  connection.query("select * from package where customerId="+customerId, (err, rows) => {
     if (err) { console.log(err) }
     res.json(rows);
   });
 })
 router.get('/monetization/deletePackage',verifyJWT,(req,res)=>{
-  var packcageId = req.param('packageId');
+  var packcageId = req.query.packageId;
   var sql1 = "DELETE FROM package WHERE id="+packcageId;
   var sql2 = "DELETE FROM package_sub WHERE packageId="+packcageId;
   connection.query(sql1,(err,result)=>{});
   connection.query(sql2,(err,result)=>{var response = {"err":0,success:true};res.json(response);});
 })
 router.get('/monetization/addMonetization',verifyJWT,(req,res)=>{
-  res.render('addMonetization');
+  var sql = "SELECT * FROM county ORDER BY `name`";
+  connection.query(sql,(err,result)=>{
+    res.render('addMonetization',{countries:result});
+  })
+  // res.render('addMonetization');
+})
+router.get('/monetization/editPack/:packageId',verifyJWT,(req,res)=>{
+  var packageId = req.params.packageId;
+  var sql = "SELECT * FROM county ORDER BY `name`";
+  connection.query(sql,(err,result)=>{
+    var countries = result;
+    var sql = "select * from package where id="+packageId;
+    connection.query(sql,(err,rows)=>{
+      var title = rows[0].title;
+      var details = rows[0].details;
+      res.render('editMonetization',{title:title,details:details,countries:countries,packageId:packageId});
+    })
+  })
+})
+router.get('/monetization/getLanguages',verifyJWT,(req,res)=>{
+  var packageId = req.query.packageId;
+  var sql = "SELECT package_sub.`packageId`,subscription.* FROM package_sub LEFT JOIN subscription ON package_sub.`subscriptionId` = subscription.`id` WHERE packageId="+packageId;
+  connection.query(sql,(err,result)=>{
+    res.json(result);
+  })
+})
+router.get('/monetization/editPackage',verifyJWT,(req,res)=>{
+  var packageId = req.query.packageId;
+  var packageTitle = req.query.packageTitle;
+  var packcageDetail = req.query.packageDetail;
+  var customerId = req.query.customerId;
+  var languageIds = req.query.languageIds;
+  var sql = "UPDATE package SET title='"+packageTitle+"',details='"+packcageDetail+"' WHERE id="+packageId;
+  connection.query(sql,(err,result)=>{
+    var sql1 = "DELETE FROM package_sub WHERE packageId="+packageId;
+    connection.query(sql1,(err,result)=>{
+      var sql2 = "INSERT INTO package_sub (packageId,subscriptionId) VALUES "
+      for(var i = 0 ; i < languageIds.length;i++){
+        sql2 = sql2+"("+packageId+","+languageIds[i]+"),";
+      }
+      if(languageIds.length>0){
+        sql2 = sql2.slice(0,-1);
+        console.log(sql2);
+        connection.query(sql2,(err,result)=>{
+          res.send("OK");
+        });
+      }
+    })
+  })
+})
+
+router.get("/monetization/addLanguage",verifyJWT,(req,res)=>{
+  var countryId = req.query.countryId;
+  var title = req.query.title;
+  var price = req.query.price;
+  var description = req.query.description;
+  var duration = req.query.duration;
+  var bannerUrl = req.query.bannerUrl;
+  var sql = "insert into subscription (duration,title,price,description,banner,country) values ('"+duration+"','"+title+"','"+
+    price+"','"+description+"','"+bannerUrl+"','"+countryId+"')";
+    console.log(sql);
+    connection.query(sql,function(err,result){
+      res.send(result.insertId.toString());
+    })
+});
+router.get("/monetization/removeLanguage",verifyJWT,(req,res)=>{
+  var id = req.query.id;
+
+  var sql = "delete from subscription where id=" + id;
+  connection.query(sql,(err,result)=>{
+    res.send("success");
+  })
+})
+router.get('/getCountries',verifyJWT,(req,res)=>{
+  var sql = "SELECT * FROM county ORDER BY `name`";
+  connection.query(sql,(err,result)=>{
+    res.json(result);
+  })
+})
+router.get('/monetization/addPackage',verifyJWT,(req,res)=>{
+  var packageTitle = req.query.packageTitle;
+  var packageDetail = req.query.packageDetail;
+  var customerId = req.query.customerId;
+  var languageIds = req.query.languageIds;
+  var sql = "INSERT INTO package (title,details,customerId) VALUES('"+packageTitle+"','"+packageDetail+"',"+customerId+") ";
+  console.log(sql);
+  connection.query(sql,(err, rows)=>{
+    console.log(rows);
+    var packageId = rows.insertId;
+    var sql2 = "INSERT INTO package_sub (packageId,subscriptionId) VALUES "
+    for(var i = 0 ; i < languageIds.length;i++){
+      sql2 = sql2+"("+packageId+","+languageIds[i]+"),";
+    }
+    if(languageIds.length>0){
+      sql2 = sql2.slice(0,-1);
+      console.log(sql2);
+      connection.query(sql2,(err,result)=>{
+        res.send("OK");
+      });
+    }
+  })
+})
+router.get('/monetization/getPackages',verifyJWT,(req,res)=>{
+  var customerName= req.query.app;
+  var packages = [];
+  var sql = "SELECT package.* FROM package LEFT JOIN customers ON package.`customerId` = customers.id WHERE customers.`name`='"+customerName+"'";
+  connection.query(sql,(err,rows)=>{
+    packages = rows;
+    packages.forEach(package => {
+      var sql1= "";
+    });
+  });
 })
 
 router.get('/admin/users/delete/:userid', verifyJWT, (req , res) => {
@@ -445,6 +558,7 @@ router.get('/admin/users/edit/:userid', verifyJWT, (req , res) => {
         });
     });
 })
+
 
 router.post('/admin/users/edit', verifyJWT, (req, res) => {
   let errors = [];

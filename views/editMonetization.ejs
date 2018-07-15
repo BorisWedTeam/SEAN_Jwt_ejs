@@ -19,58 +19,19 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <a href="#" class="btn btn-primary" data-toggle="modal" onclick="addPackage();">Save</a>
+                                    <a href="#" class="btn btn-primary" data-toggle="modal" onclick="editPackage(<%=packageId%>);">Save</a>
                                     <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="btnAddLanguage">Add</a>
                                 </div>
                                 <br/>
                                 <div class="row">
                                     <div class="col-md-3 text-right">title</div>
-                                    <div class="col-md-6"><input type="text" class="form-control" id="packgeTitle" /></div>
+                                    <div class="col-md-6"><input type="text" class="form-control" id="packgeTitle" value="<%=title%>" /></div>
                                 </div>
                                 <div class="row marginTop10">
                                     <div class="col-md-3 text-right">Details</div>
-                                    <div class="col-md-6"><textarea type="text"  rows=3 class="form-control" id="packageDetails"></textarea></div>
+                                    <div class="col-md-6"><textarea type="text"  rows=3 class="form-control" id="packageDetails"> <%=details%></textarea></div>
                                 </div>
                                 <div class="row marginTop10" id="languagePanel">
-                                    <!-- <div class="collapsibleParent">
-                                        <button  class="remove">X</button>
-                                        <div class="languageTitle">English</div>
-                                        <button class="collapsible"><i class="fa fa-chevron-down" aria-hidden="true"></i></button>
-                                    </div>
-                                    <div class="content" style="display:block">
-                                        <div class="row marginForm">
-                                            <div class="col-md-6">
-                                                <div class="col-md-3 text-right">Name</div>
-                                                <div class="col-md-9"><input type="text"  class="form-control"/></div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="col-md-3 text-right">Country</div>
-                                                <div class="col-md-9">
-                                                    <select class="form-control">
-                                                        <% countries.forEach(function(country){
-                                                            %>
-                                                            <option value="<%=country.id%>"><%=country.name%></option>
-                                                            <%
-                                                        })%>
-                                                    </select>
-                                                </div>
-                                            </div>    
-                                        </div>
-                                        <div class="row marginForm">
-                                            <div class="col-md-6">
-                                                <div class="col-md-3 text-right">Price</div>
-                                                <div class="col-md-9"><input type="text" class="form-control"/></div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="col-md-3 text-right">PackageId</div>
-                                                <div class="col-md-9"><input type="text"  class="form-control"/></div>
-                                            </div>
-                                        </div>
-                                        <div class="row marginForm">
-                                            <div class="col-md-3 text-right">Description</div>
-                                            <div class="col-md-6"><textarea type="text"  class="form-control" rows=3></textarea></div>
-                                        </div>
-                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -130,6 +91,24 @@
         </div>
     </div>
     <script src="/assets/js/addMonetization.js"></script>
+    <script src="/assets/js/editMonetization.js"></script>
+<script type="text/javascript">
+    var packageId = "<%=packageId%>";
+    console.log(packageId);
+    jQuery(document).ready(function($) {
+    $.ajax({
+        url:'/monetization/getLanguages',
+        type:'GET',
+        data:{packageId:packageId},
+        success:function(response){
+            languages = response;
+            for(var i = 0 ; i < languages.length; i ++){
+                appendPanel(languages[i].country,languages[i].title,languages[i].price,languages[i].description,languages[i].duration,languages[i].banner,languages[i].id);
+            }
+        }
+    })
+});
 
+</script>
      <%- include include/footer.ejs %>
  
