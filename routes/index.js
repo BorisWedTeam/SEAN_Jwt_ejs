@@ -269,7 +269,6 @@ router.get('/admin/customers/edit/:customerid', verifyJWT, (req, res) => {
 
   ], function (err, results) { //async.waterfall final result
 
-    //console.log(err, results);
     res.render('customersadd',{customer : results});
     
   });
@@ -336,7 +335,6 @@ router.get('/admin/customers', verifyJWT, (req , res)=>{
     
     ], function (err, results) { //async.waterfall final result
     
-      //console.log(err, results);
       res.json(results);
     });
     
@@ -441,7 +439,7 @@ router.get('/monetization/editPack/:packageId',verifyJWT,(req,res)=>{
 })
 router.get('/monetization/getLanguages',verifyJWT,(req,res)=>{
   var packageId = req.query.packageId;
-  var sql = "SELECT package_sub.`packageId`,subscription.* FROM package_sub LEFT JOIN subscription ON package_sub.`subscriptionId` = subscription.`id` WHERE packageId="+packageId;
+  var sql = "SELECT package_sub.`packageId`,subscription.* FROM package_sub LEFT JOIN subscription ON package_sub.`subscriptionId` = subscription.`id` WHERE packageId="+packageId +" AND subscription.`id` IS NOT NULL";
   connection.query(sql,(err,result)=>{
     res.json(result);
   })
@@ -487,10 +485,12 @@ router.get("/monetization/addLanguage",verifyJWT,(req,res)=>{
 });
 router.get("/monetization/removeLanguage",verifyJWT,(req,res)=>{
   var id = req.query.id;
-
   var sql = "delete from subscription where id=" + id;
   connection.query(sql,(err,result)=>{
-    res.send("success");
+    var sql1 = "delete from package_sub where subscriptionId="+id;
+    connection.query(sql1,(err,result)=>{
+      res.send("success");
+    })
   })
 })
 router.get('/getCountries',verifyJWT,(req,res)=>{
@@ -522,14 +522,22 @@ router.get('/monetization/addPackage',verifyJWT,(req,res)=>{
     }
   })
 })
-router.get('/monetization/getPackages',verifyJWT,(req,res)=>{
+router.get('/packages',verifyJWT,(req,res)=>{
   var customerName= req.query.app;
   var packages = [];
   var sql = "SELECT package.* FROM package LEFT JOIN customers ON package.`customerId` = customers.id WHERE customers.`name`='"+customerName+"'";
   connection.query(sql,(err,rows)=>{
     packages = rows;
-    packages.forEach(package => {
-      var sql1= "";
+    packages.forEach((i,idx,package) => {
+      var sql1= "SELECT subscription.* FROM subscription RIGHT JOIN package_sub ON subscription.`id` = package_sub.`subscriptionId` WHERE package_sub.`packageId`="+packages[idx].id;
+      console.log(sql1);
+      connection.query(sql1,(err,result)=>{
+        packages[idx].subscriptions = result;
+        if (idx === packages.length - 1){ 
+          res.json(packages);
+        }
+   
+      })
     });
   });
 })
