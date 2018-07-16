@@ -41,6 +41,10 @@ module.exports = function (passport) {
                 data: newUserMysql
               }, 'secrethhhhh', { expiresIn: 3000 }, (err, token) => {
                 newUserMysql.token = token;
+                if(rows[0].customers==''||rows[0].customers==undefined||rows[0].customers==null){
+                  newUserMysql.customers =[];
+                  return done(null, newUserMysql);
+                }
                 var sql = "SELECT id,name FROM customers WHERE id in ("+rows[0].customers+")";
                 connection.query(sql, (err, crows) => {
                   var customers = crows;

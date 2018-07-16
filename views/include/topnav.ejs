@@ -33,10 +33,17 @@
         var selectCustomerName = localStorage["selectCustomerName"];
         var selectCustomerId = localStorage["selectCustomerId"];
         if(selectCustomerId ==null||selectCustomerId==''||selectCustomerId==undefined||selectCustomerId<1){
+            <% if(user.customers==null||user.customers==undefined||user.customers==''){
+            %>    
+            localStorage["selectCustomerName"] = '';
+            localStorage["selectCustomerId"] = '';
+            <% } else { %>
+                
             selectCustomerId = '<%=user.customers[0].id%>';
             selectCustomerName = '<%=user.customers[0].name%>';
-            localStorage["selectCustomerName"] = selectCustomerId;
+            localStorage["selectCustomerName"] = selectCustomerName;
             localStorage["selectCustomerId"] = selectCustomerId;
+            <% } %>
         }
         console.log('selectCustomerId is '+selectCustomerId);
         selectCustomer(selectCustomerId);

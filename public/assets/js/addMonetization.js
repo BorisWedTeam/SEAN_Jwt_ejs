@@ -5,6 +5,31 @@ function addLanguage(){
     var description = $("#description").val();
     var duration = $("#duration").val();
     var bannerUrl = $("#bannerUrl").val();
+    if(countryId==null||countryId==''||countryId==undefined){
+        bootbox.alert("Please select a country");
+        return;
+    }
+    if(title==null||title==''||title==undefined){
+        bootbox.alert("Please input title");
+        return;
+    }
+    if(price==null||price==''||price==undefined){
+        bootbox.alert("Please input price ");
+        return;
+    }
+    if(bannerUrl==null||bannerUrl==''||bannerUrl==undefined){
+        bootbox.alert("Please input bannerUrl");
+        return;
+    }
+    if(description==null||description==''||description==undefined){
+        bootbox.alert("Please input description");
+        return;
+    }
+    if(countryId==null||countryId==''||countryId==undefined){
+        bootbox.alert("Please select a country");
+        return;
+    }
+
     $.ajax({
         url:'/monetization/addLanguage',
         type:'GET',
@@ -124,8 +149,6 @@ function appendPanel(cId,title,price,description,duration,bannerUrl,packageId){
     initCollapse();
 }
 $("#languagePanel").on("click",".remove",function(e){
-    console.log(e);
-    console.log("you clicked close");
     var collapseHeader = this.parentElement;
     var collapseContent = collapseHeader.nextElementSibling;
     var id = collapseHeader.id.replace("language_","");

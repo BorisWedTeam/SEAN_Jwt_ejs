@@ -422,7 +422,6 @@ router.get('/monetization/addMonetization',verifyJWT,(req,res)=>{
   connection.query(sql,(err,result)=>{
     res.render('addMonetization',{countries:result});
   })
-  // res.render('addMonetization');
 })
 router.get('/monetization/editPack/:packageId',verifyJWT,(req,res)=>{
   var packageId = req.params.packageId;
@@ -619,4 +618,29 @@ router.post('/admin/users/edit', verifyJWT, (req, res) => {
     }
 })
 
+router.get('/mobileUsers/displayUsers',verifyJWT,(req,res)=>{
+  res.render("mobileUsers/mobileUsers");
+})
+router.get('/mobileUsers/display',verifyJWT,(req,res)=>{
+  var customerId = req.query.customerId;
+  var sql = "SELECT mobile_users.id,email,fullName,county.`name` as country ,package.`title`,last_active,device_id,user_status FROM mobile_users LEFT JOIN county ON mobile_users.`countryId` = county.`id` LEFT JOIN package ON mobile_users.`package_id` = package.`id` WHERE customer_id="+customerId;
+  connection.query(sql,(err,rows)=>{
+    res.json(rows);
+  })
+})
+router.get('/mobileUsers/add',verifyJWT,(req,res)=>{
+  var sql = "SELECT * FROM county ORDER BY `name`";
+  var countries = [];
+  connection.query(sql,(err,result)=>{
+    countries = result;
+    // res.render('mobileUsers/add',{countries:result});
+
+    var sql2 = "SELECT id,title FROM package";
+    connection.query(sql2,(err,rows)=>{
+      res.render('mobileUsers/add',{countries:countries,packages:rows});
+    })
+
+  })
+
+})
 module.exports = router;

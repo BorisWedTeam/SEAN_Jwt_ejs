@@ -1,0 +1,51 @@
+ <!-- Right Panel -->
+
+ <%- include ../include/header.ejs %>
+
+ <%- include ../include/sidebar.ejs %>
+
+ <div id="right-panel" class="right-panel">
+
+        <%- include ../include/topnav.ejs %>
+
+        
+        <div class="content mt-3">
+            <div class="animated fadeIn">
+                           <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                     <strong class="card-title">Users</strong>
+                            </div>
+                            <div class="card-body">
+                                <a href="/monetization/addMonetization" class="btn btn-primary">Add</a>
+                                <br/><br/>
+                                <table id="mobileUserTable" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Email Address</th>
+                                            <th>Full Name</th>
+                                            <th>Country</th>
+                                            <th>Subscription Package</th>
+                                            <th>Last Active</th>
+                                            <th>Connected Devices</th>
+                                            <th>User Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .animated -->
+        </div><!-- .content -->
+    </div><!-- /#right-panel -->
+     
+    <script src="/assets/js/mobileUsers/mobileUsers.js"></script>
+
+     <!-- Right Panel -->
+     <%- include ../include/footer.ejs %>
+ 
