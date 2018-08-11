@@ -4,86 +4,83 @@
 
  <%- include ../include/sidebar.ejs %>
 
- <div id="right-panel" class="right-panel">
+<div id="right-panel" class="right-panel">
+    <%- include ../include/topnav.ejs %>
+    <div class="content mt-3">
+        <div class="animated fadeIn">
+                        <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                    <strong class="card-title">Add a User</strong>
+                        </div>
+                        <div class="card-body">
+                            <br/><br/>
+                            <form method="POST" action"/mobileUsers/doAdd">
+                                <div class="row marginForm">
+                                    <div class="col-md-3 text-right">Customer Name</div>
+                                    <div class="col-md-6"><input type="text" id="title" class="form-control"/></div>
+                                </div>
+                                <div class="row marginForm">
+                                    <div class="col-md-3 text-right">Receipt Id</div>
+                                    <div class="col-md-6"><input type="text" id="title" class="form-control"/></div>
+                                </div>
+                                <div class="row marginForm">
+                                    <div class="col-md-3 text-right">Email Address</div>
+                                    <div class="col-md-6"><input type="text" id="title" class="form-control"/></div>
+                                </div>
+                                <div class="row marginForm">
+                                    <div class="col-md-3 text-right">Full Name</div>
+                                    <div class="col-md-6"><input type="text" id="title" class="form-control"/></div>
+                                </div>
+                                <div class="row marginForm">
+                                    <div class="col-md-3 text-right">Country</div>
+                                    <div class="col-md-6">
+                                        <select id="country" class="form-control">
+                                            <% countries.forEach(function(country){
+                                                %>
+                                                <option value="<%=country.id%>"><%=country.name%></option>
+                                                <%
+                                            })%>
+                                        </select>
+                                    </div>
+                                </div>    
+                                                        
+                                <div class="row marginForm">
+                                    <div class="col-md-3 text-right">Subscription Package</div>
+                                    <div class="col-md-6">
+                                        <select id="package" class="form-control">
+                                            <% packages.forEach(function(package){
+                                                %>
+                                                <option value="<%=package.id%>"><%=package.title%></option>
+                                                <%
+                                            })%>
+                                        </select>
 
-        <%- include ../include/topnav.ejs %>
+                                    </div>
+                                </div>
+                                <div class="row marginForm">
+                                    <div class="col-md-3 text-right">Linked device Id</div>
+                                    <div class="col-md-6"><input type="text" id="title" class="form-control"/></div>
+                                </div>
+                                <div class="row marginForm">
+                                    <div class="col-md-3 text-right">User Status</div>
+                                    <div class="col-md-6"><input type="text" id="title" class="form-control"/></div>
+                                </div>
+                                <div class="row marginForm text-center">
+                                    <div class="col-md-12 text-center"><input type="submit"  class="btn btn-primary" value=" &nbsp;Add&nbsp; "/></div>
 
-        
-        <div class="content mt-3">
-            <div class="animated fadeIn">
-                           <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                     <strong class="card-title">Add a User</strong>
-                            </div>
-                            <div class="card-body">
-                                <br/><br/>
-                                <form method="POST" action"/mobileUsers/doAdd">
-                                    <div class="row marginForm">
-                                        <div class="col-md-3 text-right">Customer Name</div>
-                                        <div class="col-md-6"><input type="text" id="title" class="form-control"/></div>
-                                    </div>
-                                    <div class="row marginForm">
-                                        <div class="col-md-3 text-right">Receipt Id</div>
-                                        <div class="col-md-6"><input type="text" id="title" class="form-control"/></div>
-                                    </div>
-                                    <div class="row marginForm">
-                                        <div class="col-md-3 text-right">Email Address</div>
-                                        <div class="col-md-6"><input type="text" id="title" class="form-control"/></div>
-                                    </div>
-                                    <div class="row marginForm">
-                                        <div class="col-md-3 text-right">Full Name</div>
-                                        <div class="col-md-6"><input type="text" id="title" class="form-control"/></div>
-                                    </div>
-                                    <div class="row marginForm">
-                                        <div class="col-md-3 text-right">Country</div>
-                                        <div class="col-md-6">
-                                            <select id="country" class="form-control">
-                                                <% countries.forEach(function(country){
-                                                    %>
-                                                    <option value="<%=country.id%>"><%=country.name%></option>
-                                                    <%
-                                                })%>
-                                            </select>
-                                        </div>
-                                    </div>    
-                                                            
-                                    <div class="row marginForm">
-                                        <div class="col-md-3 text-right">Subscription Package</div>
-                                        <div class="col-md-6">
-                                            <select id="package" class="form-control">
-                                                <% packages.forEach(function(package){
-                                                    %>
-                                                    <option value="<%=package.id%>"><%=package.title%></option>
-                                                    <%
-                                                })%>
-                                            </select>
+                                </div>
 
-                                        </div>
-                                    </div>
-                                    <div class="row marginForm">
-                                        <div class="col-md-3 text-right">Linked device Id</div>
-                                        <div class="col-md-6"><input type="text" id="title" class="form-control"/></div>
-                                    </div>
-                                    <div class="row marginForm">
-                                        <div class="col-md-3 text-right">User Status</div>
-                                        <div class="col-md-6"><input type="text" id="title" class="form-control"/></div>
-                                    </div>
-                                    <div class="row marginForm text-center">
-                                        <div class="col-md-12 text-center"><input type="submit"  class="btn btn-primary" value=" &nbsp;Add&nbsp; "/></div>
-                                    </div>
+                            </form>
 
-                                </form>
-
-                            </div>
                         </div>
                     </div>
                 </div>
-            </div><!-- .animated -->
-        </div><!-- .content -->
-    </div><!-- /#right-panel -->
-     
+            </div>
+        </div><!-- .animated -->
+    </div><!-- .content -->
+</div><!-- /#right-panel -->
     <script src="/assets/js/mobileUsers/add.js"></script>
 
      <!-- Right Panel -->

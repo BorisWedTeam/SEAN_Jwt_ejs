@@ -51,47 +51,10 @@ function modalInit(){
     $("#duration").val('');
     $("#bannerUrl").val('');
 }
-var countries = [];
-var htmlCountry = '';
 var languageIds = [];
 jQuery(document).ready(function($) {
     initCollapse();
-    $.ajax({
-        url:'/getCountries',
-        type:'GET',
-        success:function(response){
-            countries = response;
-            for(var i = 0 ; i < countries.length; i ++){
-                htmlCountry +="<option value='"+countries[i].id+"'>"+countries[i].name+"</option>";
-            }
-        }
-    })
 });
-function initCollapse(){
-    var coll = document.getElementsByClassName("collapsible");
-    var i;
-    for (i = 0; i < coll.length; i++) {
-        coll[i].removeEventListener("click", collapseCallback);
-    }
-
-    for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", collapseCallback);
-    }
-}
-function collapseCallback() {
-    this.classList.toggle("active");
-    var content = this.parentElement.nextElementSibling;
-    if (content.style.display=='block'){
-        content.style.display = 'none';
-        this.firstChild.classList.remove('fa-chevron-down');
-        this.firstChild.classList.add('fa-chevron-up');
-    } else {
-        content.style.display = 'block';
-        this.firstChild.classList.remove('fa-chevron-up');
-        this.firstChild.classList.add('fa-chevron-down');
-
-    } 
-}
 function addLanguagePanel(packageId){
     var countryId = $("#country").val();
     var title = $("#title").val();

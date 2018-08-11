@@ -639,8 +639,15 @@ router.get('/mobileUsers/add',verifyJWT,(req,res)=>{
     connection.query(sql2,(err,rows)=>{
       res.render('mobileUsers/add',{countries:countries,packages:rows});
     })
-
   })
+})
+router.get('/videos/add',verifyJWT,(req,res)=>{
+  var sql = "SELECT * FROM county ORDER BY `name`";
+  var countries = [];
+  connection.query(sql,(err,result)=>{
+    countries = result;
+    res.render('videos/add',{countries:countries});
 
+  });
 })
 module.exports = router;

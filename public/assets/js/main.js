@@ -1,4 +1,9 @@
+var countries = [];
+var htmlCountry = '';
+
+
 $.noConflict();
+
 jQuery(document).ready(function($) {
 
 	"use strict";
@@ -42,6 +47,19 @@ jQuery(document).ready(function($) {
 	//ulMenu.first().attr('aria-expanded',true);
 	element.parent().parent().prev().attr('aria-expanded',true);
 	element.parent().parent().addClass('show');
+
+
+	$.ajax({
+        url:'/getCountries',
+        type:'GET',
+        success:function(response){
+            countries = response;
+            for(var i = 0 ; i < countries.length; i ++){
+                htmlCountry +="<option value='"+countries[i].id+"'>"+countries[i].name+"</option>";
+            }
+        }
+    })
+
 });
 
 function selectCustomer(customerId){
@@ -56,4 +74,30 @@ function selectCustomer(customerId){
 }
 function init(){
 	localStorage['selectCustomerId'] = 0;
+}
+
+function initCollapse(){
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    for (i = 0; i < coll.length; i++) {
+        coll[i].removeEventListener("click", collapseCallback);
+    }
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", collapseCallback);
+    }
+}
+function collapseCallback() {
+    this.classList.toggle("active");
+    var content = this.parentElement.nextElementSibling;
+    if (content.style.display=='block'){
+        content.style.display = 'none';
+        this.firstChild.classList.remove('fa-chevron-down');
+        this.firstChild.classList.add('fa-chevron-up');
+    } else {
+        content.style.display = 'block';
+        this.firstChild.classList.remove('fa-chevron-up');
+        this.firstChild.classList.add('fa-chevron-down');
+
+    } 
 }
